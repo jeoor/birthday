@@ -1,0 +1,253 @@
+/* ── Bottom bar ────────────────────────── */
+
+.bottom-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(190px, auto);
+  align-items: center;
+  gap: 0;
+  margin-top: 0;
+  min-height: 72px;
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Open birthday controls ───────────── */
+
+.bar-icon-button,
+.bar-text-button {
+  min-height: 36px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.bar-icon-button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  padding: 0;
+}
+
+.bar-text-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 0.8rem;
+  font-size: 0.8125rem;
+  font-weight: 550;
+}
+
+.bar-icon-button:hover:not(:disabled),
+.bar-text-button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent-hover);
+  background: var(--accent-muted);
+}
+
+/* ── Compact music ─────────────────────── */
+
+.compact-music {
+  display: grid;
+  grid-template-columns: 36px minmax(110px, auto) minmax(180px, 1fr) auto 36px;
+  align-items: center;
+  gap: clamp(0.75rem, 1.5vw, 1.375rem);
+  min-width: 0;
+  padding-right: clamp(1.25rem, 2.75vw, 2.75rem);
+}
+
+.music-progress {
+  position: relative;
+  display: block;
+  min-width: 0;
+  height: 14px;
+  margin: 0;
+}
+
+.music-progress::before,
+.music-progress > i {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  height: 1px;
+  pointer-events: none;
+  transform-origin: left;
+}
+
+.music-progress::before {
+  right: 0;
+  background: var(--border);
+}
+
+.music-progress > i {
+  z-index: 1;
+  width: 100%;
+  background: var(--accent);
+}
+
+.music-progress input {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 14px;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.music-progress:focus-within::before {
+  background: var(--border-strong);
+}
+
+.music-play-button {
+  grid-column: 1;
+  border-color: color-mix(in oklab, var(--accent), transparent 35%);
+  color: var(--accent);
+}
+
+.music-title {
+  grid-column: 2;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 560;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.music-time {
+  grid-column: 4;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.music-volume-control {
+  position: relative;
+  grid-column: 5;
+}
+
+.music-error {
+  grid-column: 2 / -1;
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.volume-popover {
+  position: absolute;
+  z-index: 20;
+  right: 0;
+  bottom: calc(100% + 0.5rem);
+  display: grid;
+  grid-template-columns: minmax(7rem, 1fr) auto;
+  align-items: center;
+  width: 13rem;
+  margin: 0;
+  padding: 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.volume-popover input {
+  min-width: 0;
+  height: 2px;
+  accent-color: var(--accent);
+}
+
+.volume-popover span {
+  color: var(--text-tertiary);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.volume-popover button {
+  grid-column: 1 / -1;
+  min-height: 28px;
+  margin-top: 0.45rem;
+  border: 0;
+  border-top: 1px solid var(--border-soft);
+  color: var(--text-secondary);
+  background: transparent;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.volume-popover button:hover {
+  color: var(--accent);
+}
+
+/* ── Compact mic ───────────────────────── */
+
+.compact-mic {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  justify-content: end;
+  column-gap: 0.7rem;
+  justify-self: end;
+  width: 100%;
+  padding: 0 clamp(0.5rem, 1.5vw, 1.25rem) 0 clamp(1.25rem, 2.75vw, 2.75rem);
+  text-align: right;
+}
+
+.compact-mic::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1px;
+  height: 32px;
+  background: var(--border);
+  content: "";
+  transform: translateY(-50%);
+}
+
+.microphone-button {
+  border-color: color-mix(in oklab, var(--text-secondary), transparent 48%);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.microphone-idle-state {
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.microphone-feedback {
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.mic-meter {
+  height: 2px;
+  margin-top: 0.5rem;
+  background: var(--border);
+}
+
+.mic-meter span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: transform 0.08s linear;
+  transform-origin: left;
+  width: 100%;
+}
+
+.compact-mic .mic-meter {
+  grid-column: 1 / -1;
+  width: min(100%, 12rem);
+  margin: 0.4rem 0 0 auto;
+}

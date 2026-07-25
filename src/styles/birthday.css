@@ -1,0 +1,187 @@
+/* ── Shared: age display ───────────────── */
+
+.age-display {
+  display: inline-flex;
+  align-items: baseline;
+  gap: clamp(0.35rem, 0.65vw, 0.55rem);
+  margin-top: clamp(2.5rem, 5vh, 4rem);
+}
+
+.age-display strong {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 10vw, 8.5rem);
+  font-weight: 470;
+  font-optical-sizing: auto;
+  font-variant-numeric: tabular-nums;
+  line-height: 0.8;
+  letter-spacing: -0.075em;
+}
+
+.age-display span {
+  padding: 0;
+  color: var(--accent);
+  font-size: 0.8125rem;
+  font-weight: 620;
+  letter-spacing: 0.14em;
+  transform: translateY(-0.18em);
+}
+
+/* ── Shared: editorial button ──────────── */
+
+.editorial-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 38px;
+  padding: 0 0.95rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-control);
+  color: var(--accent-on);
+  background: var(--accent);
+  font-size: var(--text-caption);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.editorial-button:hover:not(:disabled) {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+}
+
+/* ── Birthday page: hero grid ──────────── */
+
+.birthday-hero {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  min-height: 0;
+  padding-top: 0;
+}
+
+.birthday-mode .birthday-hero {
+  height: 100%;
+}
+
+.birthday-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(3rem, 7vh, 5rem) 0;
+}
+
+.birthday-date-label {
+  margin: 0;
+  color: var(--accent);
+  font-size: var(--text-caption);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.birthday-copy h1 {
+  margin: 0.85rem 0 0;
+  max-width: 10ch;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: clamp(4.15rem, 5.7vw, 6.25rem);
+  font-weight: 480;
+  font-optical-sizing: auto;
+  line-height: 0.94;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+  hanging-punctuation: first last;
+}
+
+.birthday-copy h1 span {
+  display: block;
+}
+
+.birthday-copy .benming-status {
+  margin-top: 0.65rem;
+}
+
+/* ── Birthday page: cake stage ─────────── */
+
+.birthday-stage {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.cake-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 1.5rem;
+  padding: clamp(2rem, 5vh, 4rem) 0;
+}
+
+.cake-button {
+  display: block;
+  width: min(100%, 28rem);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.cake-button:hover:not(:disabled) {
+  transform: translateY(-4px);
+}
+
+.cake-button:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.birthday-cake-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.birthday-cake-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cake-image-fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+
+/* ── Cake action row ───────────────────── */
+
+.cake-action-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  width: min(100%, 22rem);
+}
+
+.cake-action-row .editorial-button {
+  flex: 0 0 auto;
+}
+
+.cake-status {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-small);
+  line-height: 1.5;
+}

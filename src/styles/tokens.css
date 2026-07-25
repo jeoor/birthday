@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: var(--font-body);
+  color: var(--fg);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+
+  --bg: #0a0a0b;
+  --surface: #111113;
+  --surface-warm: #161618;
+  --fg: #f2f0eb;
+  --fg-2: #bdb8ae;
+  --muted: #918b82;
+  --meta: #d6b574;
+  --border: rgba(255, 255, 255, 0.12);
+  --border-soft: rgba(255, 255, 255, 0.075);
+  --accent: #d6b574;
+  --accent-on: #0a0a0b;
+  --accent-hover: #e2c58c;
+  --accent-active: #b99755;
+  --success: #80a879;
+  --warn: #d6b574;
+  --danger: #b43a32;
+  --font-display: "Newsreader Variable", "Songti SC", STSong, serif;
+  --font-body: "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, Menlo, monospace;
+  --elev-raised: 0 20px 50px rgba(31, 26, 22, 0.12);
+  --background: var(--bg);
+  --surface-raised: var(--surface-warm);
+  --border-strong: var(--border);
+  --text-primary: var(--fg);
+  --text-secondary: var(--fg-2);
+  --text-tertiary: var(--muted);
+  --text-disabled: color-mix(in oklab, var(--muted), transparent 34%);
+  --accent-muted: color-mix(in oklab, var(--accent), transparent 88%);
+  --benming: var(--danger);
+  --benming-hover: color-mix(in oklab, var(--danger), black 8%);
+  --benming-muted: color-mix(in oklab, var(--danger), transparent 86%);
+  --benming-border: color-mix(in oklab, var(--danger), transparent 48%);
+  --benming-subtle: color-mix(in oklab, var(--danger), transparent 92%);
+  --radius-control: 4px;
+  --radius-container: 6px;
+  --radius-section: 8px;
+  --page-gutter: clamp(1.25rem, 4.5vw, 4rem);
+  --content-width: 1280px;
+  --text-caption: 0.75rem;
+  --text-small: 0.8125rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--background);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--background);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--accent-muted);
+}
+
+button:disabled,
+input:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}

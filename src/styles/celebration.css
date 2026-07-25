@@ -1,0 +1,100 @@
+/* ── Celebration gate ──────────────────── */
+
+.celebration-gate {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--page-gutter);
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: var(--background);
+}
+
+.gate-close {
+  position: absolute;
+  top: clamp(1.25rem, 4vw, 3rem);
+  right: clamp(1.25rem, 4vw, 3rem);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+}
+
+.gate-close:hover {
+  color: var(--text-primary);
+  background: var(--surface);
+}
+
+.gate-layout {
+  display: flex;
+  align-items: center;
+  width: min(100%, var(--content-width));
+  min-height: min(640px, calc(100svh - 4rem));
+}
+
+.gate-primary {
+  width: min(100%, 52rem);
+}
+
+.gate-date-line {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.gate-date-line > p {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+}
+
+.gate-primary h2 {
+  max-width: 10ch;
+  margin: 1.5rem 0 0;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 7vw, 6.75rem);
+  font-weight: 480;
+  font-optical-sizing: auto;
+  line-height: 0.94;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+  hanging-punctuation: first last;
+}
+
+.gate-primary h2 span {
+  display: block;
+}
+
+.gate-begin {
+  margin-top: clamp(3rem, 7vw, 5rem);
+}
+
+.gate-begin svg {
+  transition: transform 0.25s ease;
+}
+
+.gate-begin:hover svg {
+  transform: translateX(3px);
+}
+
+/* ── Celebration canvas ────────────────── */
+
+.celebration-canvas {
+  position: fixed;
+  z-index: 70;
+  inset: 0;
+  width: 100vw;
+  height: 100svh;
+  pointer-events: none;
+}

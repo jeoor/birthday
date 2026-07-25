@@ -1,0 +1,85 @@
+/* ── Shell ─────────────────────────────── */
+
+.app-shell {
+  min-height: 100vh;
+  background: var(--background);
+}
+
+.page-content {
+  width: min(100%, var(--content-width));
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.birthday-mode {
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.birthday-mode .page-content {
+  display: grid;
+  flex: 1;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: 0;
+  padding-bottom: clamp(1rem, 2.2vh, 1.5rem);
+}
+
+.ordinary-mode .page-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+/* ── Simulation banner ─────────────────── */
+
+.simulation-banner {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 0.5rem;
+  min-height: 28px;
+  padding: 0.25rem var(--page-gutter);
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text-tertiary);
+  background: color-mix(in oklab, var(--surface), transparent 18%);
+  font-size: 0.6875rem;
+  letter-spacing: 0.07em;
+}
+
+.simulation-banner > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.simulation-copy-mobile {
+  display: none;
+}
+
+.simulation-banner button {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--text-tertiary);
+  background: transparent;
+  cursor: pointer;
+}
+
+.simulation-banner button:hover {
+  color: var(--accent);
+}

@@ -1,0 +1,332 @@
+/* ══════════════════════════════════════════
+   Responsive
+   ══════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .birthday-hero {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .birthday-copy h1 {
+    font-size: clamp(3.5rem, 6.5vw, 4.75rem);
+  }
+
+  .bottom-bar {
+    grid-template-columns: 1fr;
+    gap: 0;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .compact-music {
+    grid-template-columns: 36px minmax(0, 1fr) auto 36px;
+    column-gap: clamp(0.625rem, 2vw, 1rem);
+    row-gap: 0.35rem;
+    padding: 1rem 0 0.9rem;
+  }
+
+  .music-play-button,
+  .music-title,
+  .music-time,
+  .music-volume-control {
+    grid-row: 1;
+  }
+
+  .music-time {
+    grid-column: 3;
+  }
+
+  .music-volume-control {
+    grid-column: 4;
+  }
+
+  .music-progress {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .music-error {
+    grid-column: 1 / -1;
+  }
+
+  .compact-mic {
+    justify-content: start;
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+    padding: 0.9rem 0 1rem;
+    border-top: 1px solid var(--border);
+    text-align: left;
+  }
+
+  .compact-mic::before {
+    display: none;
+  }
+
+  .microphone-feedback {
+    text-align: left;
+  }
+
+  .compact-mic .mic-meter {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --page-gutter: 1.125rem;
+  }
+
+  .simulation-copy-desktop {
+    display: none;
+  }
+
+  .simulation-copy-mobile {
+    display: block;
+  }
+
+  /* Ordinary page mobile */
+
+  .ordinary-countdown-hero {
+    min-height: clamp(31rem, calc(72svh - 28px), 36rem);
+  }
+
+  .ordinary-countdown-content {
+    padding: 6.75rem 0 2rem;
+  }
+
+  .age-watermark {
+    top: 55%;
+    right: 0.25rem;
+    bottom: auto;
+    color: color-mix(in oklab, var(--fg), transparent 96%);
+    font-size: clamp(9rem, 34vw, 11rem);
+  }
+
+  .countdown-section.is-hero .countdown-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .countdown-section.is-hero .countdown-unit {
+    padding: 1.5rem 0.25rem;
+    border-bottom: 0;
+    border-left: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .countdown-section.is-hero .countdown-unit:first-child {
+    grid-column: 1 / -1;
+    padding: 1.8rem 0 1.6rem;
+    border-bottom: 1px solid var(--border);
+    border-left: 0;
+    text-align: left;
+  }
+
+  .countdown-section.is-hero .countdown-unit:nth-child(2) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .countdown-section.is-hero .countdown-unit strong {
+    max-width: 100%;
+    font-size: clamp(2.2rem, 11.5vw, 3.1rem);
+    white-space: nowrap;
+  }
+
+  .countdown-section.is-hero .countdown-unit:first-child strong {
+    font-size: clamp(6rem, 30vw, 8rem);
+  }
+
+  .year-progress {
+    margin-top: 2rem;
+  }
+
+  .ordinary-mode .page-content {
+    padding-bottom: 2.25rem;
+  }
+
+  .countdown-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .countdown-unit {
+    padding: 2rem 1.25rem;
+  }
+
+  .countdown-unit:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .countdown-unit:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .countdown-unit strong {
+    font-size: clamp(2.8rem, 15vw, 4rem);
+  }
+
+  /* Birthday page mobile */
+
+  .birthday-hero {
+    display: block;
+    min-height: 0;
+    padding-top: 1.5rem;
+  }
+
+  .birthday-mode {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .birthday-mode .page-content {
+    display: block;
+    min-height: 0;
+    padding-bottom: 2rem;
+  }
+
+  .birthday-mode .birthday-hero {
+    height: auto;
+  }
+
+  .birthday-copy {
+    min-height: 0;
+    padding: 2rem 0 1rem;
+  }
+
+  .birthday-copy h1 {
+    font-size: clamp(3rem, 13vw, 3.75rem);
+    line-height: 0.9;
+  }
+
+  .age-display {
+    margin-top: 1.75rem;
+  }
+
+  .age-display strong {
+    font-size: clamp(4.5rem, 20vw, 5.5rem);
+  }
+
+  .birthday-copy .benming-status {
+    margin-top: 0.65rem;
+  }
+
+  .birthday-stage {
+    display: block;
+  }
+
+  .cake-stage {
+    min-height: 0;
+    padding: 0 0 1.5rem;
+  }
+
+  .cake-button {
+    width: min(280px, 78vw);
+  }
+
+  .cake-action-row {
+    width: min(100%, 20rem);
+  }
+
+  .bottom-bar {
+    grid-template-columns: 1fr;
+    margin-top: 1rem;
+    padding: 0;
+  }
+
+  .compact-music {
+    padding: 1rem 0 0.9rem;
+  }
+
+  .compact-mic {
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+    padding: 0.9rem 0;
+    border-top: 1px solid var(--border);
+    text-align: left;
+  }
+
+  .compact-mic::before {
+    display: none;
+  }
+
+  .microphone-button {
+    margin-left: 0;
+  }
+
+  .microphone-feedback {
+    text-align: left;
+  }
+
+  .compact-mic .mic-meter {
+    margin-left: 0;
+  }
+
+  .gate-layout {
+    width: 100%;
+    min-height: calc(100svh - 2 * var(--page-gutter));
+  }
+
+  .gate-primary {
+    padding-block: 3rem;
+  }
+
+  .gate-primary h2 {
+    font-size: clamp(3.2rem, 15vw, 4.25rem);
+  }
+}
+
+@media (max-height: 680px) and (min-width: 701px) {
+  .birthday-mode {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .birthday-mode .page-content {
+    min-height: 100svh;
+  }
+
+  .birthday-mode .birthday-hero {
+    min-height: 32rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .section-heading-line {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .countdown-unit {
+    padding-inline: 0.85rem;
+  }
+
+  .countdown-section.is-hero .countdown-unit {
+    padding-inline: 0.5rem;
+  }
+
+  .cake-button {
+    width: min(248px, 72vw);
+  }
+
+  .gate-primary h2 {
+    font-size: clamp(3.1rem, 15.5vw, 4rem);
+  }
+
+  .compact-music {
+    column-gap: 0.5rem;
+  }
+
+  .music-title {
+    font-size: 0.8125rem;
+  }
+
+  .music-time {
+    font-size: 0.6875rem;
+  }
+}
