@@ -7,8 +7,6 @@ const LUNAR_INFO = '04bd8,04ae0,0a570,054d5,0d260,0d950,16554,056a0,09ad0,055d2,
 export const MIN_YEAR = 1900
 export const MAX_YEAR = 2100
 
-export type CountdownUnitKey = 'day' | 'week' | 'month' | 'year'
-
 const LUNAR_EPOCH_UTC = Date.UTC(MIN_YEAR, 0, 31)
 const DAY_IN_MS = 24 * 60 * 60 * 1_000
 const FIRST_BOUNDARY_YEAR = 1999

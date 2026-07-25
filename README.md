@@ -2,9 +2,8 @@
 
 [![CI](https://github.com/jeoor/kayro-birthday/actions/workflows/ci.yml/badge.svg)](https://github.com/jeoor/kayro-birthday/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-MIT-d6b574.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-62%2F62-d6b574.svg)](https://github.com/jeoor/kayro-birthday/actions/workflows/ci.yml)
 
-一个为 Kayro 专属设计的私人时间档案。普通日期以编辑式排版记录真实周岁、下一次生日倒计时和当前年龄周期；每年本地时间 1 月 29 日自动切换为包含极简蛋糕、蜡烛、音乐、DOM 纸片动画与可选吹气检测的生日模式。
+我自己的私人时间档案。普通日期以编辑式排版记录真实周岁、下一次生日倒计时和当前年龄周期；每年本地时间 1 月 29 日自动切换为包含极简蛋糕、蜡烛、音乐、DOM 纸片动画与可选吹气检测的生日模式。
 
 ## 视觉系统
 
