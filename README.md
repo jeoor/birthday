@@ -1,6 +1,10 @@
 # Kayro's Birthday
 
-一个为 Kayro 专属设计的私人时间档案。普通日期以编辑式排版记录真实周岁、下一次生日倒计时和当前年龄周期；每年本地时间 1 月 29 日自动切换为包含极简蛋糕、蜡烛、音乐、一次性纸片动画与可选吹气检测的生日模式。
+[![CI](https://github.com/jeoor/kayro-birthday/actions/workflows/ci.yml/badge.svg)](https://github.com/jeoor/kayro-birthday/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-MIT-d6b574.svg)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-62%2F62-d6b574.svg)](https://github.com/jeoor/kayro-birthday/actions/workflows/ci.yml)
+
+一个为 Kayro 专属设计的私人时间档案。普通日期以编辑式排版记录真实周岁、下一次生日倒计时和当前年龄周期；每年本地时间 1 月 29 日自动切换为包含极简蛋糕、蜡烛、音乐、DOM 纸片动画与可选吹气检测的生日模式。
 
 ## 视觉系统
 
@@ -8,7 +12,7 @@
 - 使用开放式栅格、细分隔线和留白建立层级，不使用玻璃拟态卡片；
 - 普通模式以超大生日倒计时为第一视觉焦点，当前年龄退为低对比背景水印；
 - 生日模式沿用同一排版，只增加真实质感的双状态蛋糕、烛光、音乐与克制的仪式动作；
-- 蛋糕使用同一母图衍生的点燃／熄灭 WebP，庆祝纸片通过短时 Canvas 动画绘制；
+- 蛋糕使用同一母图衍生的点燃／熄灭 WebP，庆祝纸片通过 DOM 三波节奏动画与暖色余晖渲染；
 
 ## 技术栈
 
@@ -18,8 +22,8 @@
 - Motion（原 Framer Motion）
 - Lucide React
 - date-fns
-- WebP 蛋糕、Canvas 一次性纸片动画
-- Vitest 日期逻辑测试 + ESLint
+- WebP 双状态蛋糕、Motion DOM 纸片动画（三波节奏 + 暖色余晖）
+- Vitest 62 项单元测试（日期、农历、Hooks、工具函数）+ ESLint 零警告
 
 项目不依赖后端、jQuery 或 UI 框架。蛋糕资源为本项目生成并内置的本地素材。
 
@@ -138,26 +142,41 @@ Vercel 与 Netlify 默认提供 HTTPS，因此可以正常申请麦克风权限�
 ## 目录结构
 
 ```text
-kayro-birthday/
+.
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── public/
-│   ├── audio/README.md
-│   ├── images/            # 点燃／熄灭状态蛋糕 WebP
-│   └── favicon.svg
+│   ├── audio/
+│   │   ├── README.md
+│   │   └── birthday.mp3
+│   ├── favicon.svg
+│   └── images/
+│       ├── birthday-cake-extinguished-final.webp
+│       └── birthday-cake-lit-final.webp
 ├── src/
-│   ├── components/       # 编辑式 Hero、倒计时、图片蛋糕与控制组件
-│   ├── hooks/            # 日期、倒计时、音频与麦克风
-│   ├── lib/              # 个人配置、生日/农历边界算法和存储工具
-│   ├── test/             # 生日与本命年边界测试
-│   ├── types/            # 共享类型
+│   ├── components/          # 编辑式 Hero、倒计时、图片蛋糕与控制组件
+│   ├── hooks/               # 日期、倒计时、音频与麦克风
+│   ├── lib/                 # 个人配置、生日/农历边界算法和存储工具
+│   ├── styles/              # CSS tokens、布局、倒计时、生日、控件、庆祝、响应式
+│   ├── test/                # 生日、本命年、工具函数与 hooks 单元测试
+│   ├── types/               # 共享类型
 │   ├── App.tsx
 │   ├── index.css
 │   └── main.tsx
+├── .gitattributes
+├── .gitignore
+├── LICENSE
+├── README.md
+├── birthday.config.ts
 ├── eslint.config.js
 ├── index.html
 ├── package.json
 ├── postcss.config.js
 ├── tailwind.config.js
-├── tsconfig*.json
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
 └── vite.config.ts
 ```
 
