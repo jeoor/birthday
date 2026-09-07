@@ -97,11 +97,13 @@
   }
 
   .age-watermark {
-    top: 55%;
-    right: 0.25rem;
+    top: 56%;
+    right: 1vw;
+    left: auto;
     bottom: auto;
-    color: color-mix(in oklab, var(--fg), transparent 96%);
-    font-size: clamp(9rem, 34vw, 11rem);
+    color: color-mix(in oklab, var(--fg), transparent 90%);
+    font-size: clamp(11rem, 42vw, 15rem);
+    transform: translateY(-50%);
   }
 
   .countdown-section.is-hero .countdown-strip {
