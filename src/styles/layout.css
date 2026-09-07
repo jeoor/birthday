@@ -33,7 +33,10 @@
 }
 
 .app-shell {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+  min-height: 100svh;
   background: var(--background);
 }
 
@@ -45,8 +48,6 @@
 }
 
 .birthday-mode {
-  display: flex;
-  flex-direction: column;
   height: 100svh;
   min-height: 0;
   overflow: hidden;
@@ -57,14 +58,42 @@
   flex: 1;
   grid-template-rows: minmax(0, 1fr) auto;
   min-height: 0;
-  padding-bottom: clamp(1rem, 2.2vh, 1.5rem);
+  padding-bottom: 0;
 }
 
 .ordinary-mode .page-content {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
-  min-height: 100svh;
+  min-height: 0;
   padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+/* ── Footer ─────────────────────────────── */
+
+.app-footer {
+  flex: 0 0 auto;
+  padding: 1.15rem var(--page-gutter) 1.35rem;
+  border-top: 1px solid var(--border-soft);
+  color: var(--text-tertiary);
+  background: var(--background);
+  font-size: var(--text-caption);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.app-footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.app-footer a:hover {
+  color: var(--accent);
+}
+
+.birthday-mode .app-footer {
+  padding: 0.75rem var(--page-gutter) clamp(1rem, 2.2vh, 1.5rem);
+  border-top: 0;
 }
 
 /* ── Simulation banner ─────────────────── */

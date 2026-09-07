@@ -27,8 +27,8 @@ export function OrdinaryCountdownHero({
         {benmingYear.isBenmingYear && (
           <motion.div
             className="ordinary-benming-context"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ ...UI_TRANSITION, delay: 0.06 }}
           >
             <BenmingStatus state={benmingYear} />
@@ -38,8 +38,8 @@ export function OrdinaryCountdownHero({
 
         <motion.div
           className="ordinary-countdown-primary"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ ...UI_TRANSITION, delay: 0.16 }}
         >
           <CountdownStrip

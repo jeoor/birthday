@@ -174,7 +174,7 @@
   .birthday-hero {
     display: block;
     min-height: 0;
-    padding-top: 1.5rem;
+    padding-top: 0.5rem;
   }
 
   .birthday-mode {
@@ -186,7 +186,7 @@
   .birthday-mode .page-content {
     display: block;
     min-height: 0;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
   }
 
   .birthday-mode .birthday-hero {
@@ -195,7 +195,7 @@
 
   .birthday-copy {
     min-height: 0;
-    padding: 2rem 0 1rem;
+    padding: 1.25rem 0 0.5rem;
   }
 
   .birthday-copy h1 {
@@ -221,7 +221,7 @@
 
   .cake-stage {
     min-height: 0;
-    padding: 0 0 1.5rem;
+    padding: 0 0 1rem;
   }
 
   .cake-button {
@@ -234,19 +234,19 @@
 
   .bottom-bar {
     grid-template-columns: 1fr;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     padding: 0;
   }
 
   .compact-music {
-    padding: 1rem 0 0.9rem;
+    padding: 0.75rem 0 0.65rem;
   }
 
   .compact-mic {
     justify-self: stretch;
     width: 100%;
     max-width: none;
-    padding: 0.9rem 0;
+    padding: 0.75rem 0;
     border-top: 1px solid var(--border);
     text-align: left;
   }
@@ -267,6 +267,10 @@
     margin-left: 0;
   }
 
+  .birthday-mode .app-footer {
+    padding-block: 0.5rem 0.75rem;
+  }
+
   .gate-layout {
     width: 100%;
     min-height: calc(100svh - 2 * var(--page-gutter));
@@ -278,6 +282,21 @@
 
   .gate-primary h2 {
     font-size: clamp(3.2rem, 15vw, 4.25rem);
+  }
+}
+
+@media (max-height: 720px) and (min-width: 701px) {
+  .birthday-mode .birthday-copy {
+    padding-block: 2rem;
+  }
+
+  .birthday-mode .cake-stage {
+    gap: 1rem;
+    padding-block: 1rem;
+  }
+
+  .birthday-mode .cake-button {
+    width: min(100%, 26rem);
   }
 }
 
