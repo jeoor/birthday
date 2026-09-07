@@ -34,7 +34,7 @@ describe('useBlowDetection', () => {
     stopTrack = vi.fn()
     mockStream = { getTracks: vi.fn(() => [{ stop: stopTrack }]) }
 
-    vi.stubGlobal('AudioContext', vi.fn(() => mockAC.context))
+    vi.stubGlobal('AudioContext', vi.fn(function () { return mockAC.context }))
     vi.stubGlobal('navigator', {
       mediaDevices: {
         getUserMedia: vi.fn().mockResolvedValue(mockStream),
@@ -105,7 +105,7 @@ describe('useBlowDetection', () => {
         finishResume = resolve
       }),
     )
-    vi.stubGlobal('AudioContext', vi.fn(() => mockAC.context))
+    vi.stubGlobal('AudioContext', vi.fn(function () { return mockAC.context }))
 
     const { useBlowDetection } = await import('../hooks/useBlowDetection')
     const { result } = renderHook(() => useBlowDetection(vi.fn()))

@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
-import birthdayConfig from './birthday.config.json'
+import birthdayConfig from './birthday.config.json' with { type: 'json' }
 
 const escapeHtml = (value: string) =>
   value.replace(

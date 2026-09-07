@@ -1,5 +1,5 @@
 import { AnimatePresence, MotionConfig } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { BirthdayExperience } from './components/BirthdayExperience'
 import { FontLoadingScreen } from './components/FontLoadingScreen'
 import { OrdinaryCountdownHero } from './components/OrdinaryCountdownHero'
@@ -18,10 +18,14 @@ export default function App() {
   const [celebrationStarted, setCelebrationStarted] = useState(
     () => birthday.isBirthday && readBoolean(`${storageKey}:celebration-started`),
   )
+  const [prevStorageKey, setPrevStorageKey] = useState(storageKey)
 
-  useEffect(() => {
+  // 日期键变化（跨天/模拟日期切换）时，在渲染期间重置庆典状态——
+  // React 官方推荐用"渲染期状态调整"替代 effect 内同步 setState。
+  if (prevStorageKey !== storageKey) {
+    setPrevStorageKey(storageKey)
     setCelebrationStarted(birthday.isBirthday && readBoolean(`${storageKey}:celebration-started`))
-  }, [birthday.isBirthday, storageKey])
+  }
 
   return (
     <MotionConfig transition={UI_TRANSITION}>

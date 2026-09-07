@@ -37,7 +37,8 @@ describe('useAudioPlayer', () => {
       removeItem: vi.fn(),
     })
     mockAudio = createMockAudio()
-    vi.stubGlobal('Audio', vi.fn(() => mockAudio.audio))
+    // vitest 5 起 vi.fn 的箭头实现不再可 new()，构造器 stub 需用普通函数。
+    vi.stubGlobal('Audio', vi.fn(function () { return mockAudio.audio }))
   })
 
   afterEach(() => {

@@ -32,14 +32,15 @@ export function useFontsReady(): boolean {
   const [fontsReady, setFontsReady] = useState(false)
 
   useEffect(() => {
-    if (typeof document === 'undefined' || typeof document.fonts === 'undefined') {
-      setFontsReady(true)
-      return
-    }
-
     let cancelled = false
     const finish = () => {
       if (!cancelled) setFontsReady(true)
+    }
+
+    if (typeof document === 'undefined' || typeof document.fonts === 'undefined') {
+      // 异步放行：不在 effect 体内同步 setState。
+      queueMicrotask(finish)
+      return
     }
 
     const check = async () => {

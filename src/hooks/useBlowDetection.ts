@@ -44,7 +44,11 @@ export function useBlowDetection(onBlow: () => void): BlowDetectionState {
   const blowStartedRef = useRef<number | null>(null)
   const onBlowRef = useRef(onBlow)
   const requestTokenRef = useRef(0)
-  onBlowRef.current = onBlow
+
+  // 渲染期间不允许写 ref：在 effect 中同步最新回调。
+  useEffect(() => {
+    onBlowRef.current = onBlow
+  }, [onBlow])
 
   const disable = useCallback(() => {
     requestTokenRef.current += 1

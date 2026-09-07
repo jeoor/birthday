@@ -86,7 +86,11 @@ function buildStrips(width: number, height: number, count: number): StripDef[] {
 
 export function CelebrationCanvas({ onComplete }: CelebrationCanvasProps) {
   const onCompleteRef = useRef(onComplete)
-  onCompleteRef.current = onComplete
+
+  // 渲染期间不允许写 ref：在 effect 中同步最新回调。
+  useEffect(() => {
+    onCompleteRef.current = onComplete
+  }, [onComplete])
 
   const [ready, setReady] = useState(false)
 
@@ -100,10 +104,15 @@ export function CelebrationCanvas({ onComplete }: CelebrationCanvasProps) {
   }, [])
 
   useEffect(() => {
-    setReady(true)
+    // 下一次事件循环再置 ready：既满足"挂载后再渲染纸片"的动画需要，
+    // 也避免在 effect 体内同步 setState（新 hooks 规则）。
+    const readyTimer = window.setTimeout(() => setReady(true), 0)
     const maxEnd = strips.reduce((m, s) => Math.max(m, s.delay + s.duration), 0)
     const timer = setTimeout(() => onCompleteRef.current(), (maxEnd + 0.5) * 1000)
-    return () => clearTimeout(timer)
+    return () => {
+      window.clearTimeout(readyTimer)
+      clearTimeout(timer)
+    }
   }, [strips])
 
   if (!ready) return null

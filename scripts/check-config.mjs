@@ -98,6 +98,7 @@ export function parseBirthdayConfig(source) {
   } catch (error) {
     throw new Error(
       `birthday.config.json 不是有效 JSON：${error instanceof Error ? error.message : error}`,
+      { cause: error },
     )
   }
 

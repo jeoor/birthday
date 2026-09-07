@@ -7,7 +7,7 @@ import type { CandleState } from '../types/birthday'
 import { CandleFlames } from './CandleFlames'
 
 interface MinimalCakeProps {
-  buttonRef: RefObject<HTMLButtonElement>
+  buttonRef: RefObject<HTMLButtonElement | null>
   candleState: CandleState
   onBlow: () => void
 }
