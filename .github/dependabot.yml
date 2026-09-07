@@ -1,0 +1,25 @@
+# Dependabot：维护 npm 依赖与 GitHub Actions 版本。
+# 说明：这是"有更新时才开 PR"的辅助机制——不能作为保活依赖
+# （无更新时没有当月 PR）；仓库持续活动由 .github/workflows/keepalive.yml 保证。
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 2
+    groups:
+      all-deps:
+        patterns:
+          - '*'
+
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 2
+    groups:
+      all-actions:
+        patterns:
+          - '*'

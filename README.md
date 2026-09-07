@@ -168,7 +168,12 @@ Vercel 与 Netlify 默认提供 HTTPS，因此可以正常申请麦克风权限�
 
 ### 定时任务可靠性
 
-此仓库当前是公开仓库。GitHub 会在公开仓库连续 60 天没有活动时自动停用 scheduled workflow；恢复仓库活动或手动重新启用后才会继续运行。因此年度 cron 不能单独保证数月后仍处于启用状态。可选择保持仓库有活动、将仓库设为私有，或使用独立的外部定时服务。详见 [GitHub schedule 文档](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)。
+此仓库当前是公开仓库。GitHub 会在公开仓库连续 60 天没有有效活动时自动停用 scheduled workflow（参见 GitHub 文档）；恢复仓库活动或手动重新启用后才会继续运行。本项目已配置：
+
+- [`.github/workflows/keepalive.yml`](.github/workflows/keepalive.yml)：每月 1 日与 20 日 03:17 UTC（北京 11:17，避开整点高峰）各运行一次，向默认分支真实提交可活动的 `.keepalive`（单行时间戳覆盖），使仓库持续处于"有活动"状态，从而降低年度 cron 被自动停用的概率——注意 GitHub 高负载时定时任务仍可能延迟或被丢弃，任何方案都无法绝对保证；
+- [`.github/dependabot.yml`](.github/dependabot.yml)：每周为 npm 与 GitHub Actions 版本创建合并 PR（分组减少噪音），需要手动合并。Dependabot 是维护辅助，**不能替代保活**——无更新时整月可能没有 PR。
+
+详见 [GitHub schedule 文档](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)。
 
 验证发送（Actions 页面 → Birthday blessing email → Run workflow）:
 
@@ -184,9 +189,11 @@ Vercel 与 Netlify 默认提供 HTTPS，因此可以正常申请麦克风权限�
 ```text
 .
 ├── .github/
+│   ├── dependabot.yml            # npm / Actions 依赖维护（辅助机制）
 │   └── workflows/
 │       ├── birthday-email.yml   # 生日当天 00:00 自动发祝福邮件
-│       └── ci.yml
+│       ├── ci.yml
+│       └── keepalive.yml        # 每月两次真实提交，防仓库归档与定时任务停用
 ├── scripts/
 │   ├── birthday-wishes.mjs     # 祝福语录（随机抽取，自动去重）
 │   ├── check-config.mjs        # pnpm cfg 统一配置检查

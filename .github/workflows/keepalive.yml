@@ -1,0 +1,48 @@
+name: Keep repo active
+
+on:
+  schedule:
+    # 每月 1 日与 20 日北京时间 11:17（= UTC 03:17）各运行一次，与
+    # birthday-email.yml 一样显式声明 timezone。GitHub 会在公开仓库连续 60 天
+    # 无活动时自动停用 scheduled workflow；每月两次真实提交可大幅降低该风险
+    # （高负载时定时任务本身仍可能延迟或被丢弃，无法绝对保证）。避开整点可减少
+    # 被调度队列丢弃的概率。
+    - cron: '17 11 1,20 * *'
+      timezone: 'Asia/Shanghai'
+  # 手动触发（首次部署验证用）。
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # 显式检出默认分支：手动触发时即使选择了其他分支，也始终操作默认分支。
+      # checkout 默认即使用 GITHUB_TOKEN，无需显式传入 token。
+      - name: Checkout default branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Commit keepalive
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # 单行覆盖（不追加、不刷屏）；时间戳每次变化 → 每次都是真实提交。
+          date -u +%Y-%m-%dT%H:%M:%SZ > .keepalive
+          git add .keepalive
+
+          # 暂存区无变化才宁静退出；否则正常提交——真实错误（身份、权限、
+          # 签名等）会暴露并让任务失败，而不是被误当作成功。
+          if git diff --cached --quiet; then
+            echo "没有可提交的变更，跳过。"
+            exit 0
+          fi
+
+          git commit -m "chore: repo keepalive"
+          git push origin HEAD:"${{ github.event.repository.default_branch }}"
