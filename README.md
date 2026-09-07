@@ -29,7 +29,7 @@
 
 ## 环境要求
 
-- Node.js 18.18+（推荐 Node.js 20 LTS）
+- Node.js 22.12+（推荐 Node.js 22 LTS 或 24；当前工具链 vite 8 / vitest 5 / jsdom 30 已不支持 Node 20）
 - pnpm 9+
 - 现代浏览器（Chrome、Edge、Firefox、Safari 的近期版本）
 
