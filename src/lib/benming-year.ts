@@ -1,4 +1,5 @@
 import { differenceInMilliseconds, subDays } from 'date-fns'
+import birthdayConfig from '../../birthday.config.json'
 import type { BenmingYearState, ZodiacIdentity } from '../types/benming'
 import {
   getLunarYear,
@@ -6,9 +7,9 @@ import {
   isWithinLunarCalendarSupport,
   parseLocalDate,
 } from './lunar-calendar'
-import { PERSON } from '../../birthday.config'
 import { clamp } from './utils'
 
+const PERSON = birthdayConfig.person
 const ZODIAC_CYCLE: readonly ZodiacIdentity[] = [
   { key: 'rat', label: '鼠', earthlyBranch: '子' },
   { key: 'ox', label: '牛', earthlyBranch: '丑' },

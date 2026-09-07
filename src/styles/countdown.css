@@ -164,6 +164,7 @@
   background: var(--accent);
   transform-origin: left;
   will-change: transform;
+  transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .year-progress.is-benming .progress-line span {

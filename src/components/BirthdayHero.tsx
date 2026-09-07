@@ -26,7 +26,7 @@ export function BirthdayHero({
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...UI_TRANSITION, delay: 0.04 }}
         >
-          1 月 29 日
+          {BIRTHDAY.month} 月 {BIRTHDAY.day} 日
         </motion.p>
         <motion.h1
           id="birthday-title"

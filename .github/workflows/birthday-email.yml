@@ -1,0 +1,34 @@
+name: Birthday blessing email
+
+on:
+  schedule:
+    # 每年 1 月 29 日北京时间 00:00 发送一次。
+    # 改 birthday.config.json 后同步本处“分 时 日 月”，再运行 pnpm cfg。
+    - cron: '0 0 29 1 *'
+      timezone: 'Asia/Shanghai'
+  # 允许在 Actions 页面手动触发；勾选 force 可不看日期直接发送，方便随时测试。
+  workflow_dispatch:
+    inputs:
+      force:
+        description: '非生日也强制发送（测试用）'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  send-blessing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Send blessing email
+        # 公开参数由 birthday.config.json 提供；密码只注入实际发送步骤。
+        env:
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          BIRTHDAY_FORCE: ${{ inputs.force }}
+        run: node scripts/send-birthday-email.mjs

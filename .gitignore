@@ -7,3 +7,6 @@ dist
 .idea
 .vscode/*
 !.vscode/extensions.json
+# 本地邮件模板预览页（由 DRY_RUN 生成，不入库）
+email-template-preview.html
+.tmp*

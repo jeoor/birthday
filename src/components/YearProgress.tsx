@@ -4,48 +4,28 @@ interface YearProgressProps {
   age: number
   progress: number
   isBenmingYear: boolean
+  /** 字体就绪、加载页开始淡出后为 true；此后进度条才滑入，保证动画不被加载页遮挡。 */
+  active: boolean
 }
 
-export function YearProgress({ age, progress, isBenmingYear }: YearProgressProps) {
+export function YearProgress({ age, progress, isBenmingYear, active }: YearProgressProps) {
   const rounded = Math.min(100, Math.max(0, progress))
-  const targetProgress = useRef(rounded)
-  const animationComplete = useRef(false)
   const [displayProgress, setDisplayProgress] = useState(0)
+  const startedRef = useRef(false)
 
+  // 加载页完全淡出（约 0.3s）后才开始 0 → 当前进度的滑入（CSS transition 平滑过渡），
+  // 保证整段动画在可见状态下播放。
   useEffect(() => {
-    targetProgress.current = rounded
-    if (animationComplete.current) setDisplayProgress(rounded)
+    if (!active || startedRef.current) return
+    startedRef.current = true
+    const timer = window.setTimeout(() => setDisplayProgress(rounded), 380)
+    return () => window.clearTimeout(timer)
+  }, [active, rounded])
+
+  // 后续数据变化（如每日百分比刷新）同样平滑过渡，不重播。
+  useEffect(() => {
+    if (startedRef.current) setDisplayProgress(rounded)
   }, [rounded])
-
-  useEffect(() => {
-    animationComplete.current = false
-    setDisplayProgress(0)
-    let frameId: number | undefined
-    const delayId = window.setTimeout(() => {
-      const startedAt = performance.now()
-      const duration = 1600
-
-      const drawProgress = (now: number) => {
-        const elapsed = Math.min(1, (now - startedAt) / duration)
-        const eased = 1 - Math.pow(1 - elapsed, 3)
-        setDisplayProgress(targetProgress.current * eased)
-
-        if (elapsed < 1) {
-          frameId = window.requestAnimationFrame(drawProgress)
-        } else {
-          animationComplete.current = true
-          setDisplayProgress(targetProgress.current)
-        }
-      }
-
-      frameId = window.requestAnimationFrame(drawProgress)
-    }, 700)
-
-    return () => {
-      window.clearTimeout(delayId)
-      if (frameId !== undefined) window.cancelAnimationFrame(frameId)
-    }
-  }, [age])
 
   return (
     <section

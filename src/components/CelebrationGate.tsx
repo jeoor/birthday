@@ -54,7 +54,7 @@ export function CelebrationGate({
           >
             <div className="gate-primary">
               <div className="gate-date-line">
-                <p>1 月 29 日</p>
+                <p>{BIRTHDAY.month} 月 {BIRTHDAY.day} 日</p>
                 <BenmingStatus state={benmingYear} />
               </div>
               <h2 id="gate-title">

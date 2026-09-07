@@ -10,8 +10,17 @@ interface BlowDetectionState {
   disable: () => void
 }
 
-const BLOW_THRESHOLD = 0.16
+/** 校准阶段：启用后前若干帧用于测量本底噪声（约 250ms）。 */
+const CALIBRATION_FRAMES = 15
+/** 自适应阈值下限/上限：安静环境更灵敏，嘈杂环境抬高阈值防误触。 */
+const BLOW_THRESHOLD_MIN = 0.1
+const BLOW_THRESHOLD_MAX = 0.3
+/** 阈值 = 本底噪声中位数 × 该系数，再 clamp 到上下限之间。 */
+const BLOW_THRESHOLD_WEIGHT = 2.5
+/** 吹气需持续时长（毫秒）。 */
 const BLOW_DURATION = 650
+/** 峰值/RMS 比上限：吹气是平稳噪声（≈1–3），说话有高频尖峰（>4.5），用于排除大声说话。 */
+const CREST_LIMIT = 4.5
 
 const MESSAGES: Record<MicrophoneStatus, string> = {
   idle: '只有你点开它时，才会请求麦克风权限。',
@@ -61,7 +70,9 @@ export function useBlowDetection(onBlow: () => void): BlowDetectionState {
     setStatus('requesting')
     try {
       pendingStream = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: false },
+        // 关闭自动增益（否则吹气能量会被抹平）；关闭降噪（WebRTC 会主动
+        // 衰减"稳态噪声"，而吹气恰恰是稳态宽带噪声）；仅保留回声消除。
+        audio: { echoCancellation: true, noiseSuppression: false, autoGainControl: false },
       })
       if (requestToken !== requestTokenRef.current) {
         pendingStream.getTracks().forEach((track) => track.stop())
@@ -69,6 +80,14 @@ export function useBlowDetection(onBlow: () => void): BlowDetectionState {
       }
 
       pendingContext = new AudioContext()
+      // iOS Safari：在 await getUserMedia 之后创建，激活窗口可能已过期，
+      // context 会停在 suspended——必须显式 resume，否则完全检测不到声音。
+      if (pendingContext.state !== 'running') await pendingContext.resume()
+      if (requestToken !== requestTokenRef.current) {
+        pendingStream.getTracks().forEach((track) => track.stop())
+        if (pendingContext.state !== 'closed') void pendingContext.close()
+        return
+      }
       const analyser = pendingContext.createAnalyser()
       analyser.fftSize = 1024
       analyser.smoothingTimeConstant = 0.45
@@ -78,18 +97,42 @@ export function useBlowDetection(onBlow: () => void): BlowDetectionState {
       contextRef.current = pendingContext
       setStatus('listening')
 
+      // 校准：前 CALIBRATION_FRAMES 帧只测本底噪声（取中位数），
+      // 之后阈值 = 本底 × 权重，随环境自适应。
+      const calibrationSamples: number[] = []
+      let calibrationFrame = 0
+      let blowThreshold = BLOW_THRESHOLD_MIN
+
       const analyse = (time: number) => {
         analyser.getByteTimeDomainData(samples)
         let sum = 0
+        let peak = 0
         for (const sample of samples) {
           const normalized = (sample - 128) / 128
+          const absolute = Math.abs(normalized)
+          if (absolute > peak) peak = absolute
           sum += normalized * normalized
         }
         const rms = Math.sqrt(sum / samples.length)
         const normalizedLevel = Math.min(1, rms / 0.32)
         setLevel(normalizedLevel)
 
-        if (rms >= BLOW_THRESHOLD) {
+        if (calibrationFrame < CALIBRATION_FRAMES) {
+          calibrationSamples.push(rms)
+          calibrationFrame += 1
+          if (calibrationFrame === CALIBRATION_FRAMES) {
+            calibrationSamples.sort((a, b) => a - b)
+            const baseline = calibrationSamples[Math.floor(calibrationSamples.length / 2)]
+            blowThreshold = Math.min(
+              BLOW_THRESHOLD_MAX,
+              Math.max(BLOW_THRESHOLD_MIN, baseline * BLOW_THRESHOLD_WEIGHT),
+            )
+          }
+          frameRef.current = requestAnimationFrame(analyse)
+          return
+        }
+
+        if (rms >= blowThreshold && peak / rms <= CREST_LIMIT) {
           blowStartedRef.current ??= time
           if (time - blowStartedRef.current >= BLOW_DURATION) {
             onBlowRef.current()

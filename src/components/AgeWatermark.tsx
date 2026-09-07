@@ -1,42 +1,13 @@
-import { useEffect, useState } from 'react'
-
 interface AgeWatermarkProps {
   age: number
 }
 
 export function AgeWatermark({ age }: AgeWatermarkProps) {
-  const [displayAge, setDisplayAge] = useState(0)
-
-  useEffect(() => {
-    if (age <= 0) {
-      setDisplayAge(age)
-      return
-    }
-
-    setDisplayAge(0)
-    let currentAge = 0
-    let intervalId: number | undefined
-    const stepDelay = Math.max(70, Math.min(120, 1800 / age))
-    const startId = window.setTimeout(() => {
-      intervalId = window.setInterval(() => {
-        currentAge += 1
-        setDisplayAge(currentAge)
-
-        if (currentAge >= age && intervalId !== undefined) {
-          window.clearInterval(intervalId)
-        }
-      }, stepDelay)
-    }, 180)
-
-    return () => {
-      window.clearTimeout(startId)
-      if (intervalId !== undefined) window.clearInterval(intervalId)
-    }
-  }, [age])
-
+  // 直接呈现当前年龄，不播放 0→年龄 的计数动画：
+  // 巨型数字在计数过程中宽度与视觉重心会逐级位移，且刷新后会退回 0。
   return (
     <span className="age-watermark" aria-hidden="true">
-      {displayAge}
+      {age}
     </span>
   )
 }

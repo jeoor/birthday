@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { BIRTHDAY } from '../lib/birthday'
 import type { BenmingYearState } from '../types/benming'
 import { UI_TRANSITION } from '../lib/motion'
 import { AgeWatermark } from './AgeWatermark'
@@ -20,7 +21,7 @@ export function OrdinaryCountdownHero({
   benmingYear,
 }: OrdinaryCountdownHeroProps) {
   return (
-    <section className="ordinary-countdown-hero" id="top" aria-label="Kayro 的生日倒计时">
+    <section className="ordinary-countdown-hero" id="top" aria-label={`${BIRTHDAY.name} 的生日倒计时`}>
       <AgeWatermark age={age} />
       <div className="ordinary-countdown-content">
         {benmingYear.isBenmingYear && (

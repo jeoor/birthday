@@ -1,0 +1,28 @@
+{
+  "person": {
+    "name": "敖苛",
+    "birthDate": "2007-01-29"
+  },
+  "automation": {
+    "schedule": {
+      "time": "00:00",
+      "timezone": "Asia/Shanghai"
+    },
+    "email": {
+      "smtp": {
+        "host": "smtp.larksuite.com",
+        "port": 465,
+        "secure": true,
+        "user": "noreply@kayro.cn"
+      },
+      "sender": {
+        "email": "noreply@kayro.cn",
+        "name": "敖苛记"
+      },
+      "recipient": "i@kayro.cn",
+      "siteUrl": "https://hbd.kayro.cn/",
+      "cakeImagePath": "/images/birthday-cake-lit-final.webp",
+      "footerText": "敖致天 · 苛制人"
+    }
+  }
+}

@@ -1,9 +1,10 @@
 import { differenceInMilliseconds, isValid, parse } from 'date-fns'
+import birthdayConfig from '../../birthday.config.json'
 import type { BirthdayConfig, BirthdaySnapshot, CountdownParts } from '../types/birthday'
 import { getBenmingYearState } from './benming-year'
 import { formatLocalDate } from './utils'
-import { PERSON } from '../../birthday.config'
 
+const PERSON = birthdayConfig.person
 const [birthYear, birthMonth, birthDay] = PERSON.birthDate.split('-').map(Number)
 
 export const BIRTHDAY = {

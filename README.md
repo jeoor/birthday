@@ -11,7 +11,7 @@
 - 使用开放式栅格、细分隔线和留白建立层级，不使用玻璃拟态卡片；
 - 普通模式以超大生日倒计时为第一视觉焦点，当前年龄退为低对比背景水印；
 - 生日模式沿用同一排版，只增加真实质感的双状态蛋糕、烛光、音乐与克制的仪式动作；
-- 蛋糕使用同一母图衍生的点燃／熄灭 WebP，庆祝纸片通过 DOM 三波节奏动画与暖色余晖渲染；
+- 蛋糕使用同一母图衍生的点燃／熄灭 WebP；燃烧状态另有按像素对齐的火焰／烛光／烟缕叠加动画，庆祝纸片通过 DOM 三波节奏动画与暖色余晖渲染；
 
 ## 技术栈
 
@@ -21,8 +21,9 @@
 - Motion（原 Framer Motion）
 - Lucide React
 - date-fns
-- WebP 双状态蛋糕、Motion DOM 纸片动画（三波节奏 + 暖色余晖）
-- Vitest 62 项单元测试（日期、农历、Hooks、工具函数）+ ESLint 零警告
+- WebP 双状态蛋糕、按像素对齐的蜡烛火焰叠加动画、Motion DOM 纸片动画（三波节奏 + 暖色余晖）
+- 字体：Newsreader Variable（仅 latin 子集）+ 思源宋体 Noto Serif SC（中文衬线）+ HarmonyOS_Regular（中文正文，B 站 CDN）+ JetBrains Mono（等宽）；加载门控防字体交换跳变
+- Vitest 69 项单元测试（日期、农历、Hooks、组件、配置与邮件模板）+ ESLint 零警告
 
 项目不依赖后端、jQuery 或 UI 框架。蛋糕资源为本项目生成并内置的本地素材。
 
@@ -64,16 +65,18 @@ http://localhost:5173/?date=2026-01-29
 
 ## 修改个人信息
 
-在项目根目录的 `birthday.config.ts` 中修改集中配置：
+在项目根目录的 `birthday.config.json` 中修改集中配置：
 
-```ts
-export const PERSON = {
-  name: 'Kayro',
-  birthDate: '2007-01-29',
-} as const
+```json
+{
+  "person": {
+    "name": "敖苛",
+    "birthDate": "2007-01-29"
+  }
+}
 ```
 
-页面标题位于 `index.html`。日期使用浏览器本地时区；实际周岁通过生日是否已到达判断，不是简单年份相减。
+同一文件还集中保存邮件定时、SMTP 公开参数、收发件人和站点 URL；密码不在其中。修改后运行 `pnpm cfg` 检查。日期使用浏览器本地时区；实际周岁通过生日是否已到达判断，不是简单年份相减。
 
 ## 本命年规则
 
@@ -138,13 +141,57 @@ public/audio/birthday.mp3
 
 Vercel 与 Netlify 默认提供 HTTPS，因此可以正常申请麦克风权限。
 
+## 自动生日祝福邮件
+
+每年 1 月 29 日（北京时间），GitHub Actions 会按计划触发 `scripts/send-birthday-email.mjs`——一个零依赖的 Node 18+ 脚本（内置 `node:net`/`node:tls` 最小 SMTP 客户端），通过自己的邮箱服务（飞书 SMTP：`smtp.larksuite.com:465` 隐式 TLS）向 `i@kayro.cn` 发送一封品牌化 HTML 生日祝福邮件，无需打开页面或手工操作：
+
+- 定时器：`.github/workflows/birthday-email.yml` 的年度 cron——通过 `timezone: Asia/Shanghai` 以每年 1 月 29 日北京时间 00:00 为目标时间自动运行一次。GitHub 不保证定时任务严格准点，高负载时可能延迟；脚本内的日期守卫仍会在运行瞬间二次确认，防止手动误触发时错发；
+- 统一配置：网页与发信脚本共同读取 `birthday.config.json`。修改后运行 `pnpm cfg`，它会校验字段、日期、邮箱、URL、IANA 时区，并核对 workflow 的 cron/timezone；
+- 邮件模板：`scripts/email-template.mjs`——与生日页面同一套视觉语言（近黑信笺、暖白衬线字、金色强调、细分隔线、大留白；蛋糕透明底融入深色卡片；无气泡/头像），姓名、生日和页面地址均来自统一配置；`cakeImagePath` 使用 `public/` 下的站内路径，发信时自动转为绝对 URL；
+- 发信脚本：`scripts/send-birthday-email.mjs`——支持 `AUTH LOGIN`、UTF-8 主题与 multipart（纯文本兜底 + HTML 模板）base64 正文，失败时输出 SMTP 应答便于排查；
+- 祝福语录：`scripts/birthday-wishes.mjs`——站长提供的语录清单（自动去重），每次发送随机抽取一条，不重样；
+- 发件人、收件人和 SMTP 公开参数：均在 `birthday.config.json` 中维护；
+- 内容：邮件标题与正文中的年龄由发送时刻按北京时间动态计算，祝福语随机抽取。
+
+配置（一次性）：
+
+1. 仓库 Settings → Secrets and variables → Actions → **Secrets** → New repository secret，名称 **`SMTP_PASS`**，值为发信账号密码/应用授权码；
+2. 编辑 `birthday.config.json`，若生日或发送时间变化，同步工作流中的 cron，然后运行 `pnpm cfg`；
+3. 检查通过后推送仓库，定时器即生效。
+
+### Secret 与公开配置
+
+- `SMTP_PASS` 是敏感凭据，必须创建为仓库 **Secret**，不能创建为仓库 **Variable**。Variable 默认不会在日志中脱敏，只适合用户名、主机名等非敏感信息；
+- `birthday.config.json` 只保存可公开的业务配置，`pnpm cfg` 会拒绝其中出现 `pass` 或 `password` 字段；
+- 如果密码曾出现在聊天、日志、提交或导出文件中，必须先在邮箱服务端作废并生成新密码，再更新 `SMTP_PASS`。仅把已经泄露的旧值保存为 Secret，不能恢复其安全性；
+- Workflow 仅在实际发信步骤中注入 `SMTP_PASS`，SMTP 调试日志也会隐藏登录账号和密码。
+
+### 定时任务可靠性
+
+此仓库当前是公开仓库。GitHub 会在公开仓库连续 60 天没有活动时自动停用 scheduled workflow；恢复仓库活动或手动重新启用后才会继续运行。因此年度 cron 不能单独保证数月后仍处于启用状态。可选择保持仓库有活动、将仓库设为私有，或使用独立的外部定时服务。详见 [GitHub schedule 文档](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)。
+
+验证发送（Actions 页面 → Birthday blessing email → Run workflow）:
+
+- 不勾选 **force**：只有当天恰好是生日（北京）才发，否则日志显示"不是生日，跳过发送"；
+- 勾选 **force**：无视日期立即发送一封真实邮件（年龄按当前年份推算）。
+
+本地预览（不发信）：`DRY_RUN=1 node scripts/send-birthday-email.mjs`——无需 SMTP 密码，会输出完整 HTML 模板到 stdout。本地发信测试只需设置 `SMTP_PASS=<密码>` 和 `BIRTHDAY_FORCE=true`；其他值默认读取统一配置，仍可用同名环境变量临时覆盖。`SMTP_DEBUG=1` 只打印脱敏后的 SMTP 对话。
+
+发信密码始终走 GitHub Secret `SMTP_PASS`，不要写入仓库配置、Variable 或日志。
+
 ## 目录结构
 
 ```text
 .
 ├── .github/
 │   └── workflows/
+│       ├── birthday-email.yml   # 生日当天 00:00 自动发祝福邮件
 │       └── ci.yml
+├── scripts/
+│   ├── birthday-wishes.mjs     # 祝福语录（随机抽取，自动去重）
+│   ├── check-config.mjs        # pnpm cfg 统一配置检查
+│   ├── email-template.mjs      # 品牌化 HTML 邮件模板（与生日页面同一套视觉语言）
+│   └── send-birthday-email.mjs # 祝福邮件发送脚本（Node 18+，可本地测试/预览）
 ├── public/
 │   ├── audio/
 │   │   ├── README.md
@@ -167,7 +214,7 @@ Vercel 与 Netlify 默认提供 HTTPS，因此可以正常申请麦克风权限�
 ├── .gitignore
 ├── LICENSE
 ├── README.md
-├── birthday.config.ts
+├── birthday.config.json        # 网页与邮件自动化的唯一业务配置源
 ├── eslint.config.js
 ├── index.html
 ├── package.json

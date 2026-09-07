@@ -26,9 +26,9 @@
   --success: #80a879;
   --warn: #d6b574;
   --danger: #b43a32;
-  --font-display: "Newsreader Variable", "Songti SC", STSong, serif;
-  --font-body: "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-mono: ui-monospace, Menlo, monospace;
+  --font-display: "Newsreader Variable", "Noto Serif SC", "Songti SC", STSong, serif;
+  --font-body: "HarmonyOS_Regular", "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
   --elev-raised: 0 20px 50px rgba(31, 26, 22, 0.12);
   --background: var(--bg);
   --surface-raised: var(--surface-warm);

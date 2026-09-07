@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import '@fontsource-variable/newsreader/standard.css'
+import './styles/newsreader-latin.css'
 import App from './App'
 import './index.css'
 
